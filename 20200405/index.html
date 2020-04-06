@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="word-break">
+    テストテストテストテストテストテストテストテストここで一度コード上で改行
+    あいうえおかきくけこあいうえおかきくけこあいうえおかきくけこあいうえおかきくけこあいうえおかきくけこあいうえおかきくけこあいうえおかきくけこあいうえおかきくけこあいうえおかきくけこ
+    </div>
+</body>
+<style>
+    .highlight {
+        background: yellow;
+        color: black;
+    }
+</style>
+<script>
+
+    class WordBreak {        
+        constructor(elm) {
+            this.elm = elm
+        }
+
+        execute(pos){
+            let value = this.elm.textContent
+            value = this.getBrContent(value,pos)
+            this.elm.innerHTML = value
+        }
+
+        /**
+        * 改行コードをhtml用に変換。posBreakが設定されている場合は、posBreakごとにも改行を入れる。
+        * @param {String} value 加工したい文字列
+        * @param {Number} posBreak 改行を何文字ごとに入れるかの設定
+        */
+        getBrContent(value, posBreak) {
+            if (!value) return ''
+            value = this.putBreakStrWithPosition(value, posBreak)
+            return value.replace(/\n/g, '</br>')
+        }
+
+        /**
+        * posBreakが設定されている場合は、posBreakごとに改行を入れる。
+        * @param {String} value 加工したい文字列
+        * @param {Number} posBreak 改行を何文字ごとに入れるかの設定
+        */
+        putBreakStrWithPosition(value, posBreak) {
+            let result = value
+            if (posBreak) {
+                let current = 0
+                result = ''
+                while (current < value.length) {
+                    let remainStr = value.substring(current)
+                    let indexOfNextBreakPos = remainStr.indexOf('\n')
+                    let isOverPosBreak = indexOfNextBreakPos > posBreak ||
+                        (remainStr.length > posBreak && remainStr.indexOf('\n') == -1)
+                    if (isOverPosBreak) {
+                        // posBreak以上の文字がある場合は、それまでの文字列と改行文字を追加
+                        result += remainStr.slice(0, posBreak) + '\n'
+                        current += posBreak
+                    } else if (indexOfNextBreakPos > 0) {
+                        // posBreak前に既に改行文字がある場合は、改行文字までを追加
+                        result += remainStr.slice(0, remainStr.indexOf('\n'))
+                        current += remainStr.indexOf('\n')
+                    } else if (remainStr.indexOf('\n') == 0) {
+                        // 改行が1番目にある場合は、改行文字を追加
+                        result += '\n'
+                        current += 1
+                    } else {
+                        // 改行文字が含まれていない且つposBreak以下の文字列を追加
+                        result += remainStr
+                        current += remainStr.length
+                    }
+                }
+            }
+            return result
+        }
+
+    }
+
+    let elms = document.getElementsByClassName("word-break")
+    let wordBreak = new WordBreak(elms[0]);
+    wordBreak.execute(6)
+
+
+</script>
+
+</html>
