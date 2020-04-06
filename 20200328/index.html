@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>    
+    <div class="mark-target"><p>ちょっとしたテストをやる。</p></div>
+    <!-- <div class="mark-target">意図はわからないかもしれないが、ちょっとした実験なのだ。</div> -->
+</body>
+<style>
+    .highlight{
+        background: yellow;
+        color: black;
+    }
+    </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.es6.js" integrity="sha256-SdKdehpVMNuMILam0NBdFlGPHhvLrjjl//RBsRLNMPI=" crossorigin="anonymous"></script>
+<script>
+    let contexts = document.getElementsByClassName("mark-target");
+    let instance = new Mark(contexts);
+    instance.mark("テスト", {
+    "element": "span",
+    "className": "highlight"
+});
+</script>
+</html>
